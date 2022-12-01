@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo-List</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            box-sizing: border-box;
+        }
+
+
+
+body{
+display:flex;
+height:100vh;
+width:100vw;
+justify-content:center;
+align-items:center;
+background-color:#F5F9FA;
+flex-direction:column;
+
+}
+.pointer{
+pointer-events:none;
+}
+
+.container{
+width:100vw;
+max-width:800px;
+margin:0 auto;
+border-radius: 0px 0px 0px 0px;
+background-color:#F5F9FA;
+height:100%;
+padding-bottom:20%;
+
+}
+.header{
+width:100%;
+display:flex;
+justify-content:space-between;
+background-color:#BDD9A0;
+padding:10px 20px;
+}
+.perfil{
+width:45px;
+height:45px;
+border-radius:50%;
+text-align:center;
+display:flex;
+justify-content:center;
+align-items:center;
+border:.5px solid grey;
+background-color:white;
+}
+.perfil img{
+width:85%;
+height:85%;
+border-radius:50%;
+
+}
+.name h1{
+font-size:25px;
+font-weight:bold;
+}
+.name span{
+font-size:12px;
+color:white;
+font-weight:bold;
+}
+
+.create-new-task{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding-right:10px;
+}
+
+.create-new-task input{
+width:80%;
+height:50px;
+margin:10px 0 10px 15px;
+border-radius:25px;
+padding-left:20px;
+outline:none;
+font-size:1em;
+
+}
+
+.create-new-task button{
+width:50px;
+height:50px;
+border-radius:50%;
+background-color:#BDD9A0;
+color:black;
+font-size:25px;
+box-shadow:3px 3px 8px #BDD9A0;
+border:none;
+opacity:.5;
+}
+
+.task-list{
+max-width:590px;
+height:80px;
+background-color:white;
+margin:10px 15px 15px 15px;
+font-size:15px;
+border-radius:25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding-left:5px 0px 5px 5px;
+box-shadow:6px 6px 6px  #F0F4EA;
+
+}
+
+.list-item{
+font-size:.6em;
+margin-right:2vw;
+max-width:550px;
+word-wrap:break-word;
+padding-left:10px;
+
+width:100vw;
+}
+
+
+.btn-list{
+max-width:680px;
+height:100%;
+width:300px;
+display:flex;
+align-items:center;
+flex-direction:row-reverse;
+padding-right:2vw;
+}
+.btn-list button,.btn-delet,.btn-edit,.btn-completed{
+background-color:#BDD9A0;
+width:50%;
+height:54%;
+border-radius:30px;
+margin:10px 0px 10px 5px;
+border:none;
+}
+.btn-list i{
+font-size:1.5em;
+color:black;
+}
+
+#task-error{
+display:none;
+color:red;
+font-size:.9em;
+margin-left:9%;
+}
+.task-completedk{
+    opacity: .3;
+    text-decoration: line-through;
+    background-color:#DBDBDB;
+    
+}
+.delete-task-confirmation{
+background-color:#CEE3BA;
+width:90vw;
+margin:auto auto;
+max-width:300px;
+padding:10px 10px;
+border-radius:5px;
+position:absolute;
+
+
+
+}
+.header-delete-task{
+display:flex;
+justify-content:space-between;
+height:20px;
+
+}
+
+.delete-task-confirmation h3{
+font-size:.7em;
+}
+.delete-task-confirmation span{
+font-size:.7em;
+}
+
+
+.svg{
+display:flex;
+width:100%;
+justify-content:center;
+
+}
+
+.delete-task-confirmation img{
+width:35%;
+text-align:center;
+
+}
+.delete-task-confirmation,p,h1{
+text-align:center;
+}
+.delete-task-confirmation,h1{
+font-size:1em;
+}
+.delete-task-confirmation p{
+font-size:.4em
+}
+.delete-task-confirmation button{
+width:45%;
+height:35px;
+font-size:.8em;
+color:black;
+border:none;
+border-radius:5px;
+font-weight:bold;
+margin-top:6%;;
+margin-bottom:5%;
+background-color:#F5F9FA;
+margin-left:3%;
+padding:3px 2px 3px 2px;
+}
+.edit-task-pai{
+position:absolute;
+display:none;
+}
+
+.editTask{
+width:85vw;
+display:block;
+background-color:#BDD9A0;
+position:relative;
+padding:20px 10px 20px 10px;
+border-radius:5px;
+
+}
+.editTask .buttonEditClose{
+position:absolute;
+left:80vw;
+width:50px;
+height:50px;
+top:-3vw;
+border-radius:50%;
+font-size:.9em;
+border:none;
+outline:none;
+color:black;
+background-color:#F2F2F6;
+}
+.editTask h2{
+font-size:1.2em;
+padding-bottom:20px;
+border-bottom:.1em solid white;
+}
+.editTask p{
+text-align:left;
+margin-top:10px;
+font-size:.9em;
+}
+.editTask input{
+width:80vw;
+height:40px;
+margin-top:2px;
+padding:5px 10px;
+font-size:1em;
+border:none;
+outline:none;
+border-radius:5px;
+}
+.editTask .saveTaskEdit{
+height:40px;
+width:80vw;
+margin-top:20px;
+border:none;
+border-radius:5px;
+font-size:1em;
+color:black;
+background-color:#F2F2F6;
+}
+
+
+
+
+
+
+
+    </style>
+</head>
+<body id="body">
+  <div id="container" class="container">
+      <header class="header">
+            <div class="name">
+            <h1 id="name">Rodrigo</h1>
+            <span id="task-pading">10 task pading</span>
+            </div>
+            <div class="perfil">
+                <img src="assets/pato.jpeg" alt="">
+            </div>
+        
+       </header>
+    <div class="create-new-task" id="create-new-task">
+        <input oninput="inputValidation ()" maxlength = "100" type="text" id="task-name-input" placeholder="create a new task">
+        <button id="create-task-btn"><i class="fa-thin fa-plus"></i></button>
+    </div>
+<p id="task-error">Enter a name for the task!</p>   
+    </div>
+
+
+
+<div class="edit-task-pai">
+
+    <div class="editTask" id="editTask">
+        <button class="buttonEditClose" id="buttonEditClose"><i class="fa-solid fa-xmark"></i></button>
+        <h2 id="NameEditTask">NAME: ir para academia</h2>
+        <p>New Name:</p>
+        <input id="inputEditTask" type="text" placeholder="new task name..">
+        <button id="saveTaskEdit" class="saveTaskEdit">Save</button>
+    </div>
+
+</div>
+
+
+
+
+<script>
+
+//declaração de variáveis
+const taskPading=document.getElementById("task-pading")
+const taskError=document.getElementById("task-error")
+const name=prompt("Digite seu nome")
+const taskNameInput=document.getElementById("task-name-input");
+const createTaskBtn=document.getElementById("create-task-btn");
+const btnDelete=document.getElementById("btn-delete");
+const btnEdit=document.getElementById("btn-edit");
+const BtnCompleted=document.querySelector("btn-compled");
+const container=document.getElementById("container")
+const btnEditClose2=document.getElementById("buttonEditClose")
+btnEditClose2.setAttribute('onclick',"closeTaskEdit()")
+const editTaskkPai=document.querySelector(".edit-task-pai")
+const editTaskp=document.getElementById("editTask")
+let inputEditTask=document.getElementById("inputEditTask")
+const btnSaveTask=document.getElementById("saveTaskEdit")
+
+//outros
+const nameP=document.getElementById("name")
+nameP.textContent=name
+
+taskPading.innerHTML=10+" Task pading"
+
+
+//funções
+
+const receberNameInput=()=>{
+return let =taskNameInput.value;
+console.log(taskNameInput)
+}
+function inputValidation () {
+if(taskNameInput.value){
+taskNameInput.style.border='1px solid green';
+taskNameInput.style.color='green'
+taskError.style.display="none"
+createTaskBtn.style.opacity="1"
+}
+if(!taskNameInput.value){
+taskNameInput.style.border='1px solid red';
+taskNameInput.style.color='red'
+taskError.style.display="block"
+createTaskBtn.style.opacity=".5"
+}
+
+}
+
+let idNm=100
+function idNameTask (){
+
+if(createTask)
+
+  return idNm++
+}
+const task={
+    nome:taskNameInput.value,
+    id:gerarId,
+}
+function createTask () {
+
+
+
+const nameTaskId={
+idNm:idNameTask(),
+}
+
+btnSaveTask.setAttribute('onclick',"atualizarTask("+idNm+")")
+
+
+    const task ={
+        nome:taskNameInput.value,
+        id:gerarId(),
+        
+    }
+
+
+if (taskNameInput.value){
+const taskList=document.createElement("div")
+taskList.classList.add("task-list")
+
+taskList.id=task.id
+const container=document.querySelector(".container")
+container.appendChild(taskList)
+const listItem=document.createElement("div")
+listItem.classList.add("list-item")
+taskList.appendChild(listItem)
+const nameTask=document.createElement("h2")
+nameTask.id=nameTaskId.idNm
+nameTask.classList.add(task.id)
+listItem.appendChild(nameTask)
+
+nameTask.classList.add("name-task")
+nameTask.textContent=taskNameInput.value
+const btnList=document.createElement("div")
+btnList.classList.add("btn-list")
+taskList.appendChild(btnList)
+const btnCompleted=document.createElement("button")
+btnList.appendChild(btnCompleted)
+const btnEdit=document.createElement("button")
+btnList.appendChild(btnEdit)
+const btnDelete=document.createElement("button")
+btnList.appendChild(btnDelete)
+btnCompleted.setAttribute('onclick',"deleteTask ("+task.id+")")
+
+btnDelete.setAttribute('onclick',"taskCompleted ("+task.id+")")
+btnCompleted.classList.add("btn-completed")
+
+btnEdit.classList.add("btn-edit")
+btnEdit.setAttribute("id","btn-Edit")
+btnEdit.setAttribute('onclick',"editTask ("+task.id+")")
+btnDelete.classList.add("btn-delet")
+btnDelete.setAttribute("id","btn-delete")
+
+const iconDelete=document.createElement("i")
+iconDelete.classList.add("fa-solid")
+iconDelete.classList.add("fa-xmark")
+btnCompleted.appendChild(iconDelete)
+
+const iconEdit=document.createElement("i")
+iconEdit.classList.add("fa-solid")
+iconEdit.classList.add("fa-pen")
+btnEdit.appendChild(iconEdit)
+
+const iconCompleted=document.createElement("i")
+iconCompleted.classList.add("fa-solid")
+iconCompleted.classList.add("fa-check")
+btnDelete.appendChild(iconCompleted)
+
+taskNameInput.value=""
+taskNameInput.style.border="1px solid gray"
+
+}
+
+}
+
+
+let id=1;
+function gerarId (){
+
+
+    
+    if(taskNameInput){
+       return id++
+        
+    }
+}
+
+const taskCompleted=(taskId) =>{       
+
+const taskCompletedk=document.getElementById(''+taskId+'');
+taskCompletedk.classList.toggle("task-completedk")
+
+
+}
+
+
+
+
+const editTask=(taskId)=>{
+
+
+console.log("ola")
+const editTaskPai=document.querySelector(".edit-task-pai")
+const editTask=document.getElementById("editTask")
+const body=document.getElementById("body")
+const container=document.getElementById("container")
+const taskNameEdit=document.getElementById("NameEditTask")
+const tasEditId=document.getElementById("span-edit-id")
+editTask.style.display="block"
+editTaskPai.style.display="block"
+//container.style.opacity=".3"
+container.style.filter = "brightness(.3)"
+container.classList.add("pointer")
+let valueInputTask;
+valueInputTask=taskNameInput.value
+taskNameEdit.textContent="NAME:"+valueInputTask.value
+
+}
+
+
+const closeTaskEdit=() =>{
+container.classList.remove("pointer")
+container.style.filter = "brightness(1)"
+container.style.opacity="1"
+editTaskp.style.display="none"
+editTaskk.style.display="none"
+
+}
+
+const atualizarTask=(nmID)=>{
+const inputEditTask=document.getElementById("inputEditTask")
+const nameTask2=document.getElementById(''+nmID+'')
+
+nameTask2=inputEditTask.value
+nameTask2.innerHTML=nameTask2
+
+console.log(inputEditTask)
+alert(inputEditTask.value)
+container.style.opacity="1"
+editTaskp.style.display="none"
+editTaskk.style.display="none"
+
+}
+
+
+const deleteTask=(taskId)=>{
+
+
+     const body=document.getElementById("body")
+//container.style.opacity=".4"
+container.style.filter = "brightness(.3)"
+container.classList.add("pointer")
+
+    
+    const deleteTaskValidation=document.createElement("div")
+    body.appendChild(deleteTaskValidation)
+    deleteTaskValidation.classList.add("delete-task-confirmation")
+deleteTaskValidation.classList.add("delTVal")
+
+
+    const headerDeleteTask=document.createElement("div")
+    deleteTaskValidation.appendChild(headerDeleteTask)
+    headerDeleteTask.classList.add("header-delete-task")
+
+    const deleteTaskName=document.createElement("h3")
+    headerDeleteTask.appendChild(deleteTaskName)
+
+    const DeleteTaskNameValue=document.createTextNode(task.nome)
+    deleteTaskName.appendChild(DeleteTaskNameValue)
+
+    const idTaskDelete=document.createElement("span")
+    headerDeleteTask.appendChild(idTaskDelete)
+    const strong=document.createElement("strong")
+    idTaskDelete.appendChild(strong)
+    const textName=document.createTextNode("ID:#"+"0"+taskId)
+    strong.appendChild(textName)
+
+    const svgTaskDelete=document.createElement("div")
+    deleteTaskValidation.appendChild(svgTaskDelete)
+    svgTaskDelete.classList.add("svg")
+
+    const svgTag=document.createElement("img")
+    svgTag.src="assets/alerta.png"
+    svgTaskDelete.appendChild(svgTag)
+
+    
+
+    const h1=document.createElement("h1")
+    deleteTaskValidation.appendChild(h1)
+
+    const h1Value=document.createTextNode("EXCLUIR ITEM?")
+    h1.appendChild(h1Value)
+
+    const p=document.createElement("p")
+    deleteTaskValidation.appendChild(p)
+    
+    const pValue=document.createTextNode("Não será possível desfazer essa ação")
+    p.appendChild(pValue)
+
+    const buttonNotConfirm=document.createElement("button")
+    deleteTaskValidation.appendChild(buttonNotConfirm)
+
+    const buttonNotConfirmValue=document.createTextNode("Ops, Me Enganei")
+    buttonNotConfirm.appendChild(buttonNotConfirmValue)
+    buttonNotConfirm.setAttribute('onclick',"notDelete("+taskId+")")
+
+    const buttonConfrm=document.createElement("button")
+    deleteTaskValidation.appendChild(buttonConfrm)
+
+    const buttonConfrmValue=document.createTextNode("Tenho certeza!")
+    buttonConfrm.appendChild(buttonConfrmValue)
+    buttonConfrm.setAttribute('onclick',"confirmDeleteTask("+taskId+")")
+    
+deleteTaskValidation.id=taskId
+strong.id=taskId
+
+}
+
+const confirmDeleteTask= (taskId) =>{
+
+const strong=document.getElementById(''+taskId+'')
+const deleteTaskb=document.getElementById(''+taskId+'')
+if (deleteTaskb.parentNode) {
+  deleteTaskb.parentNode.removeChild(deleteTaskb);
+}
+
+const dltc=document.getElementById(''+taskId+'')   
+console.log(dltc)
+ if(dltc.parentNode){
+    dltc.parentNode.removeChild(dltc)
+ }
+
+container.classList.remove("pointer")
+//container.style.opacity="1"
+container.style.filter = "brightness(1)"
+}
+
+const notDelete=()=>{
+
+  const delTVal=document.querySelector(".delTVal")
+if(delTVal.parentNode){
+
+
+    container.classList.remove("pointer")
+    container.style.opacity="1"
+    delTVal.parentNode.removeChild(delTVal)
+  
+}
+
+container.style.filter = "brightness(1)"
+ 
+
+}
+
+
+
+
+
+
+//Eventos
+createTaskBtn.addEventListener("click",createTask)
+btnEdit.addEventListener("click",editTask)
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
